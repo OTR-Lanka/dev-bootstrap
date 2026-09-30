@@ -25,13 +25,21 @@ curl -fsSLo bootstrap.sh https://raw.githubusercontent.com/OTR-Lanka/dev-bootstr
 echo "<sha256 from the Developer Guide>  bootstrap.sh" | sha256sum -c - && bash bootstrap.sh
 ```
 
-Options: `--dry-run` shows the plan without changing anything; `--help` lists
-all options. Anything after `--` is passed to stage 1, for example
-`bash bootstrap.sh -- --profile backend`.
+Options: `--dry-run` (or `OTR_BOOTSTRAP_DRY_RUN=true`) shows the plan without
+changing anything; `--yes` skips the confirmation (needed without a terminal);
+`--help` lists all options. Anything after `--` is passed to stage 1, for
+example `bash bootstrap.sh -- --profile backend`.
+
+The script follows the OTR-Lanka Shell Script Standard: the plan goes to
+stdout, progress and messages to stderr. Exit codes: 0 done (also after
+answering "no" to "Continue?"), 1 a check or step failed, 2 a usage error,
+127 a required tool is missing, 130 interrupted; after the hand-over, stage 1's
+exit code.
 
 ## Requirements
 
-- Ubuntu (the developer VMs run Ubuntu 24.04), run as your own user with sudo.
+- Ubuntu (the developer VMs run Ubuntu 24.04), run as your own user with sudo,
+  with `ssh` and `curl` (or `wget`) installed.
 - Network access to github.com. From outside the office network, connect the
   VPN client first.
 - Membership of the `OTR-Lanka` GitHub organization.
