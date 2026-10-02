@@ -25,10 +25,13 @@ curl -fsSLo bootstrap.sh https://raw.githubusercontent.com/OTR-Lanka/dev-bootstr
 echo "<sha256 from the Developer Guide>  bootstrap.sh" | sha256sum -c - && bash bootstrap.sh
 ```
 
-Options: `--dry-run` (or `OTR_BOOTSTRAP_DRY_RUN=true`) shows the plan without
-changing anything; `--yes` skips the confirmation (needed without a terminal);
-`--help` lists all options. Anything after `--` is passed to stage 1, for
-example `bash bootstrap.sh -- --profile backend`.
+Options: `-n`/`--dry-run` (or `OTR_BOOTSTRAP_DRY_RUN=true`) shows the plan
+without changing anything; `-y`/`--yes` skips the confirmation (needed without
+a terminal); `-h`/`--help` lists all options. `--dry-run` and `--yes` are also
+passed on to stage 1 (`otr-workspace/bootstrap.sh`), and anything after `--`
+is passed to stage 1 as well, for example
+`bash bootstrap.sh -- --profile backend`. `OTR_PROJECTS_DIR` changes the base
+directory for repositories (default `~/dev/projects`).
 
 The script follows the OTR-Lanka Shell Script Standard: the plan goes to
 stdout, progress and messages to stderr. Exit codes: 0 done (also after
@@ -39,9 +42,11 @@ exit code.
 ## Requirements
 
 - Ubuntu (the developer VMs run Ubuntu 24.04), run as your own user with sudo,
-  with `ssh` and `curl` (or `wget`) installed.
+  with bash 4.4 or later, and `ssh` and `curl` (or `wget`) installed.
 - Network access to github.com. From outside the office network, connect the
-  VPN client first.
+  VPN client first. If SSH port 22 is blocked, the script routes GitHub SSH
+  through `ssh.github.com:443`, backing up `~/.ssh/config` to
+  `~/.config/otr/backup/` before it changes it.
 - Membership of the `OTR-Lanka` GitHub organization.
 
 ## Releasing a change
